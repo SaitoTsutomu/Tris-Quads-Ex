@@ -44,13 +44,21 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             ):
                 continue
             edges[edge] = LpVariable(f"v{len(edges):03}", cat="Binary")
-        m.setObjective(lpSum(edges.values()))
         for face in bm.faces:
             if len(face.edges) != 3:
                 continue
             vv = [v for edge in face.edges if (v := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
+        ex = []
+        for vert in bm.verts:
+            vv = [v for edge in vert.link_edges if (v := edges.get(edge)) is not None]
+            if len(vert.link_edges) <= 4 or not vv:
+                continue
+            z = LpVariable(f"z{len(ex):03}", lowBound=0)
+            m += lpSum(vv) >= len(vert.link_edges) - 4 - z
+            ex.append(z)
+        m.setObjective(lpSum(edges.values()) - 0.1 * lpSum(ex))
         m.solve()
         if m.status != 1:
             self.report({"INFO"}, "Not solved.")
