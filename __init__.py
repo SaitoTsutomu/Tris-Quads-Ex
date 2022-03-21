@@ -24,6 +24,9 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        # BMesh（bm）が使い回されないようにモードを切り替える
+        bpy.ops.object.mode_set(mode="OBJECT")
+        bpy.ops.object.mode_set(mode="EDIT")
         obj = bpy.context.edit_object
         bm = bmesh.from_edit_mesh(obj.data)
         bm.edges.ensure_lookup_table()
@@ -50,7 +53,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
                 m += lpSum(vv) <= 1
         m.solve()
         if m.status != 1:
-            print("Not solved.")
+            self.report({"INFO"}, "Not solved.")
         else:
             bpy.ops.mesh.select_all(action="DESELECT")
             n = 0
@@ -58,9 +61,10 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
                 if value(v) > 0.5:
                     edge.select_set(True)
                     n += 1
-            print(f"{n} edges are dissolved.")
+            self.report({"INFO"}, f"{n} edges are dissolved.")
             bpy.ops.mesh.dissolve_edges(use_verts=False)
         bm.free()
+        del bm
         return {"FINISHED"}
 
 
