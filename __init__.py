@@ -45,7 +45,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
         for face in bm.faces:
             if len(face.edges) != 3:
                 continue
-            vv = [v for edge in face.edges if (v := edges.get(edge)) != None]
+            vv = [v for edge in face.edges if (v := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
         m.solve()
