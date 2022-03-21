@@ -10,7 +10,7 @@ Using mathematical optimization, tris to quads.
   - Select the "Add-ons" tab.
   - Press the "Install ...".
   - Select the downloaded ZIP file and press the button "Install Add-on".
-  - Check the "3Mesh: Tris to Quads Ex".
+  - Check the "Mesh: Tris to Quads Ex".
 
 ## Usage
 
