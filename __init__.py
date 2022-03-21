@@ -65,6 +65,8 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             bpy.ops.mesh.dissolve_edges(use_verts=False)
         bm.free()
         del bm
+        bpy.ops.object.mode_set(mode="OBJECT")
+        bpy.ops.object.mode_set(mode="EDIT")
         return {"FINISHED"}
 
 
