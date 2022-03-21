@@ -1,4 +1,6 @@
+import bmesh
 import bpy
+from pulp import LpMaximize, LpProblem, LpVariable, lpSum, value
 
 bl_info = {
     "name": "Tris to Quads Ex",  # プラグイン名
@@ -22,6 +24,43 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        obj = bpy.context.edit_object
+        bm = bmesh.from_edit_mesh(obj.data)
+        bm.edges.ensure_lookup_table()
+
+        m = LpProblem(sense=LpMaximize)
+        edges = {}
+        for edge in bm.edges:
+            if (
+                not edge.select
+                or len(edge.link_faces) != 2
+                or not edge.link_faces[0].select
+                or not edge.link_faces[1].select
+                or len(edge.link_faces[0].edges) != 3
+                or len(edge.link_faces[1].edges) != 3
+            ):
+                continue
+            edges[edge] = LpVariable(f"v{len(edges):03}", cat="Binary")
+        m.setObjective(lpSum(edges.values()))
+        for face in bm.faces:
+            if len(face.edges) != 3:
+                continue
+            vv = [v for edge in face.edges if (v := edges.get(edge)) != None]
+            if len(vv) > 1:
+                m += lpSum(vv) <= 1
+        m.solve()
+        if m.status != 1:
+            print("Not solved.")
+        else:
+            bpy.ops.mesh.select_all(action="DESELECT")
+            n = 0
+            for edge, v in edges.items():
+                if value(v) > 0.5:
+                    edge.select_set(True)
+                    n += 1
+            print(f"{n} edges are dissolved.")
+            bpy.ops.mesh.dissolve_edges(use_verts=False)
+        bm.free()
         return {"FINISHED"}
 
 
