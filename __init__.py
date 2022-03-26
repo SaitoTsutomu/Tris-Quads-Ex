@@ -21,6 +21,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
 
     bl_idname = "object.tris_convert_to_quads_ex"
     bl_label = "Tris to Quads Ex"
+    bl_description = "Tris to quads."
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
@@ -93,6 +94,7 @@ def register():
 
 
 def unregister():
+    bpy.types.VIEW3D_MT_edit_mesh_faces.remove(menu_func)
     for ui_class in ui_classes:
         bpy.utils.unregister_class(ui_class)
 
