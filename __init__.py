@@ -7,7 +7,7 @@ bl_info = {
     "author": "tsutomu",  # 制作者名
     "version": (1, 0),  # バージョン
     "blender": (3, 1, 0),  # 動作可能なBlenderバージョン
-    "support": "COMMUNITY",  # サポートレベル
+    "support": "TESTING",  # サポートレベル
     "category": "Mesh",  # カテゴリ名
     "description": "Tris to quads by mathematical optimization.",  # 説明文
     "location": "Mesh: Tris to Quads Ex",  # 機能の位置付け
