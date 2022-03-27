@@ -11,6 +11,7 @@ bl_info = {
     "category": "Mesh",  # カテゴリ名
     "description": "Tris to quads by mathematical optimization.",  # 説明文
     "location": "Mesh: Tris to Quads Ex",  # 機能の位置付け
+    "location": "Editmode > Face",  # 場所
     "warning": "",  # 注意点やバグ情報
     "doc_url": "https://github.com/SaitoTsutomu/Tris-Quads-Ex",  # ドキュメントURL
 }
