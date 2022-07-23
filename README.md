@@ -4,7 +4,7 @@ Using mathematical optimization, tris to quads.
 
 ## Installation
 
-- Download https://github.com/SaitoTsutomu/Tris-Quads-Ex/archive/refs/heads/main.zip
+- Download https://github.com/SaitoTsutomu/Tris-Quads-Ex/archive/refs/heads/master.zip
 - Start Blender.
 - Edit menu -> Preferences
   - Select the "Add-ons" tab.
