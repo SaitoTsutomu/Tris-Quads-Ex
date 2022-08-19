@@ -45,29 +45,23 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
                 or len(edge.link_faces[1].edges) != 3
             ):
                 continue
-            edges[edge] = LpVariable(f"v{len(edges):03}", cat="Binary")
+            ln = edge.calc_length()
+            edges[edge] = LpVariable(f"v{len(edges):03}", cat="Binary"), ln
+        mx = max([i[1] for i in edges.values()], default=1)
+        m.setObjective(lpSum(v * (1 + 0.1 * ln / mx) for edge, (v, ln) in edges.items()))
         for face in bm.faces:
             if len(face.edges) != 3:
                 continue
-            vv = [v for edge in face.edges if (v := edges.get(edge)) is not None]
+            vv = [vln[0] for edge in face.edges if (vln := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
-        ex = []
-        for vert in bm.verts:
-            vv = [v for edge in vert.link_edges if (v := edges.get(edge)) is not None]
-            if len(vert.link_edges) <= 4 or not vv:
-                continue
-            z = LpVariable(f"z{len(ex):03}", lowBound=0)
-            m += lpSum(vv) >= len(vert.link_edges) - 4 - z
-            ex.append(z)
-        m.setObjective(lpSum(edges.values()) - 0.1 * lpSum(ex))
         m.solve()
         if m.status != 1:
             self.report({"INFO"}, "Not solved.")
         else:
             bpy.ops.mesh.select_all(action="DESELECT")
             n = 0
-            for edge, v in edges.items():
+            for edge, (v, _) in edges.items():
                 if value(v) > 0.5:
                     edge.select_set(True)
                     n += 1
@@ -75,6 +69,8 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             bpy.ops.mesh.dissolve_edges(use_verts=False)
         bm.free()
         del bm
+        bpy.ops.mesh.select_all(action="DESELECT")
+        bpy.ops.mesh.select_face_by_sides(type="NOTEQUAL")
         bpy.ops.object.mode_set(mode="OBJECT")
         bpy.ops.object.mode_set(mode="EDIT")
         return {"FINISHED"}
