@@ -94,7 +94,3 @@ def unregister():
     bpy.types.VIEW3D_MT_edit_mesh_faces.remove(menu_func)
     for ui_class in ui_classes:
         bpy.utils.unregister_class(ui_class)
-
-
-if __name__ == "__main__":
-    register()
