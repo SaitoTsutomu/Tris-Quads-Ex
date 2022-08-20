@@ -1,6 +1,6 @@
 import bmesh
 import bpy
-from pulp import LpMaximize, LpProblem, LpVariable, lpSum, value
+from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
 
 bl_info = {
     "name": "Tris to Quads Ex",  # プラグイン名
@@ -55,7 +55,8 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             vv = [vln[0] for edge in face.edges if (vln := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
-        m.solve()
+        solver = PULP_CBC_CMD(fracGap=0.01, maxSeconds=60)
+        m.solve(solver)
         if m.status != 1:
             self.report({"INFO"}, "Not solved.")
         else:
