@@ -55,7 +55,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             vv = [vln[0] for edge in face.edges if (vln := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
-        solver = PULP_CBC_CMD(fracGap=0.01, maxSeconds=60)
+        solver = PULP_CBC_CMD(gapRel=0.01, timeLimit=60)
         m.solve(solver)
         if m.status != 1:
             self.report({"INFO"}, "Not solved.")
