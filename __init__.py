@@ -5,7 +5,7 @@ from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
 bl_info = {
     "name": "Tris to Quads Ex",  # プラグイン名
     "author": "tsutomu",  # 制作者名
-    "version": (2, 0),  # バージョン
+    "version": (1, 1),  # バージョン
     "blender": (3, 6, 0),  # 動作可能なBlenderバージョン
     "support": "TESTING",  # サポートレベル
     "category": "Mesh",  # カテゴリ名
@@ -25,17 +25,13 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
-        bpy.ops.object.mode_set(mode="OBJECT")
-        for obj in bpy.context.selected_objects:
-            if obj.type == "MESH":
-                self.to_quad(obj)
-        bpy.ops.object.mode_set(mode="EDIT")
-        return {"FINISHED"}
-
-    def to_quad(self, obj):
+        if len(bpy.context.selected_objects) != 1:
+            self.report({"WARNING"}, f"Select one object.")
+            return {"CANCELLED"}
         # BMesh（bm）が使い回されないようにモードを切り替える
         bpy.ops.object.mode_set(mode="OBJECT")
         bpy.ops.object.mode_set(mode="EDIT")
+        obj = bpy.context.edit_object
         bm = bmesh.from_edit_mesh(obj.data)
         bm.edges.ensure_lookup_table()
 
@@ -78,6 +74,9 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
         del bm
         bpy.ops.mesh.select_all(action="DESELECT")
         bpy.ops.mesh.select_face_by_sides(type="NOTEQUAL")
+        bpy.ops.object.mode_set(mode="OBJECT")
+        bpy.ops.object.mode_set(mode="EDIT")
+        return {"FINISHED"}
 
 
 ui_classes = (CEF_OT_tris_convert_to_quads_ex,)

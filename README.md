@@ -30,7 +30,7 @@ This add-on needs [PuLP](https://github.com/coin-or/pulp).
 
 ## Usage
 
-- Select objects.
+- Select an object.
 - Turn to the edit mode.
 - Select the edges.
 - Select "Tris to Quads Ex" of the face menu.
