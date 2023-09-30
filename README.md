@@ -19,18 +19,18 @@ This add-on needs [PuLP](https://github.com/coin-or/pulp).
 - on macOS
 
 ```
-/Applications/Blender.app/Contents/Resources/3.1/python/bin/python3.10 -m pip install pulp
+/Applications/Blender.app/Contents/Resources/3.6/python/bin/python3.10 -m pip install pulp
 ```
 
 - on Windows
 
 ```
-"C:\Program Files\Blender Foundation\Blender 3.1\3.1\python\bin\python" -m pip install pulp
+"C:\Program Files\Blender Foundation\Blender 3.6\3.6\python\bin\python" -m pip install pulp
 ```
 
 ## Usage
 
-- Select an object.
+- Select objects.
 - Turn to the edit mode.
 - Select the edges.
 - Select "Tris to Quads Ex" of the face menu.

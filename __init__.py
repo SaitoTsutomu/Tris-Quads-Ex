@@ -5,12 +5,11 @@ from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
 bl_info = {
     "name": "Tris to Quads Ex",  # プラグイン名
     "author": "tsutomu",  # 制作者名
-    "version": (1, 0),  # バージョン
-    "blender": (3, 1, 0),  # 動作可能なBlenderバージョン
+    "version": (2, 0),  # バージョン
+    "blender": (3, 6, 0),  # 動作可能なBlenderバージョン
     "support": "TESTING",  # サポートレベル
     "category": "Mesh",  # カテゴリ名
     "description": "Tris to quads by mathematical optimization.",  # 説明文
-    "location": "Mesh: Tris to Quads Ex",  # 機能の位置付け
     "location": "Editmode > Face",  # 場所
     "warning": "",  # 注意点やバグ情報
     "doc_url": "https://github.com/SaitoTsutomu/Tris-Quads-Ex",  # ドキュメントURL
@@ -26,10 +25,17 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        bpy.ops.object.mode_set(mode="OBJECT")
+        for obj in bpy.context.selected_objects:
+            if obj.type == "MESH":
+                self.to_quad(obj)
+        bpy.ops.object.mode_set(mode="EDIT")
+        return {"FINISHED"}
+
+    def to_quad(self, obj):
         # BMesh（bm）が使い回されないようにモードを切り替える
         bpy.ops.object.mode_set(mode="OBJECT")
         bpy.ops.object.mode_set(mode="EDIT")
-        obj = bpy.context.edit_object
         bm = bmesh.from_edit_mesh(obj.data)
         bm.edges.ensure_lookup_table()
 
@@ -55,10 +61,10 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             vv = [vln[0] for edge in face.edges if (vln := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
-        solver = PULP_CBC_CMD(gapRel=0.01, timeLimit=60)
+        solver = PULP_CBC_CMD(gapRel=0.01, timeLimit=60, msg=False)
         m.solve(solver)
         if m.status != 1:
-            self.report({"INFO"}, "Not solved.")
+            self.report({"INFO"}, f"{obj.name}: Not solved.")
         else:
             bpy.ops.mesh.select_all(action="DESELECT")
             n = 0
@@ -66,15 +72,12 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
                 if value(v) > 0.5:
                     edge.select_set(True)
                     n += 1
-            self.report({"INFO"}, f"{n} edges are dissolved.")
+            self.report({"INFO"}, f"{obj.name}: {n} edges are dissolved.")
             bpy.ops.mesh.dissolve_edges(use_verts=False)
         bm.free()
         del bm
         bpy.ops.mesh.select_all(action="DESELECT")
         bpy.ops.mesh.select_face_by_sides(type="NOTEQUAL")
-        bpy.ops.object.mode_set(mode="OBJECT")
-        bpy.ops.object.mode_set(mode="EDIT")
-        return {"FINISHED"}
 
 
 ui_classes = (CEF_OT_tris_convert_to_quads_ex,)
