@@ -19,7 +19,7 @@ bl_info = {
 class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     """Tris to Quads"""
 
-    bl_idname = "object.tris_convert_to_quads_ex"
+    bl_idname = "mesh.tris_convert_to_quads_ex"
     bl_label = "Tris to Quads Ex"
     bl_description = "Tris to quads."
     bl_options = {"REGISTER", "UNDO"}
