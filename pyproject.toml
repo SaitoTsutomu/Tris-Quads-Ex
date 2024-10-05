@@ -1,0 +1,58 @@
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.ruff.lint]
+ignore = ["E501", "FBT003", "N801", "N999", "PLR2004", "PLR0916"]
+preview = true
+select = [
+  "F", # Pyflakes https://docs.astral.sh/ruff/rules/#pyflakes-f
+  "E", # pycodestyle Error https://docs.astral.sh/ruff/rules/#error-e
+  "W", # pycodestyle Warning https://docs.astral.sh/ruff/rules/#warning-w
+  "C90", # mccabe https://docs.astral.sh/ruff/rules/#mccabe-c90
+  "I", # isort https://docs.astral.sh/ruff/rules/#isort-i
+  "N", # pep8-naming https://docs.astral.sh/ruff/rules/#pep8-naming-n
+  "UP", # pyupgrade https://docs.astral.sh/ruff/rules/#pyupgrade-up
+  "YTT", # flake8-2020 https://docs.astral.sh/ruff/rules/#flake8-2020-ytt
+  "ASYNC", # flake8-async https://docs.astral.sh/ruff/rules/#flake8-async-async
+  "BLE", # flake8-blind-except https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+  "FBT", # flake8-boolean-trap https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+  "B", # flake8-bugbear https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+  "A", # flake8-builtins https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+  "COM", # flake8-commas https://docs.astral.sh/ruff/rules/#flake8-commas-com
+  "C4", # flake8-comprehensions https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+  "T10", # flake8-debugger https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+  "DJ", # flake8-django https://docs.astral.sh/ruff/rules/#flake8-django-dj
+  "EM", # flake8-errmsg https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+  "ISC", # flake8-implicit-str-concat https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+  "ICN", # flake8-import-conventions https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn
+  "LOG", # flake8-logging https://docs.astral.sh/ruff/rules/#flake8-logging-log
+  "G", # flake8-logging-format https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+  "INP", # flake8-no-pep420 https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+  "PIE", # flake8-pie https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+  "PYI", # flake8-pyi https://docs.astral.sh/ruff/rules/#flake8-pyi-pyi
+  "PT", # flake8-pytest-style https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+  "Q", # flake8-quotes https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+  "RSE", # flake8-raise https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+  "RET", # flake8-return https://docs.astral.sh/ruff/rules/#flake8-return-ret
+  "SLF", # flake8-self https://docs.astral.sh/ruff/rules/#flake8-self-slf
+  "SLOT", # flake8-slots https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+  "SIM", # flake8-simplify https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "TCH", # flake8-type-checking https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
+  "INT", # flake8-gettext https://docs.astral.sh/ruff/rules/#flake8-gettext-int
+  "ARG", # flake8-unused-arguments https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+  "PTH", # flake8-use-pathlib https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+  "TD", # flake8-todos https://docs.astral.sh/ruff/rules/#flake8-todos-td
+  "PD", # pandas-vet https://docs.astral.sh/ruff/rules/#pandas-vet-pd
+  "PGH", # pygrep-hooks https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+  "PL", # Pylint https://docs.astral.sh/ruff/rules/#pylint-pl
+  "TRY", # tryceratops https://docs.astral.sh/ruff/rules/#tryceratops-try
+  "FLY", # flynt https://docs.astral.sh/ruff/rules/#flynt-fly
+  "NPY", # NumPy-specific rules https://docs.astral.sh/ruff/rules/#numpy-specific-rules-npy
+  "FAST", # FastAPI https://docs.astral.sh/ruff/rules/#fastapi-fast
+  "PERF", # Perflint https://docs.astral.sh/ruff/rules/#perflint-perf
+  "FURB", # refurb https://docs.astral.sh/ruff/rules/#refurb-furb
+  "RUF", # Ruff-specific rules https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 11

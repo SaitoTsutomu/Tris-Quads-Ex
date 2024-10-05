@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 import bmesh
 import bpy
 from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
@@ -5,8 +7,8 @@ from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
 bl_info = {
     "name": "Tris to Quads Ex",  # プラグイン名
     "author": "tsutomu",  # 制作者名
-    "version": (1, 1),  # バージョン
-    "blender": (3, 6, 0),  # 動作可能なBlenderバージョン
+    "version": (1, 2),  # バージョン
+    "blender": (4, 2, 0),  # 動作可能なBlenderバージョン
     "support": "TESTING",  # サポートレベル
     "category": "Mesh",  # カテゴリ名
     "description": "Tris to quads by mathematical optimization.",  # 説明文
@@ -22,13 +24,13 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_idname = "mesh.tris_convert_to_quads_ex"
     bl_label = "Tris to Quads Ex"
     bl_description = "Tris to quads."
-    bl_options = {"REGISTER", "UNDO"}
+    bl_options: ClassVar[set] = {"REGISTER", "UNDO"}
 
-    def execute(self, context):
+    def execute(self, _context):
         if len(bpy.context.selected_objects) != 1:
-            self.report({"WARNING"}, f"Select one object.")
+            self.report({"WARNING"}, "Select one object.")
             return {"CANCELLED"}
-        # BMesh（bm）が使い回されないようにモードを切り替える
+        # BMesh(bm)が使い回されないようにモードを切り替える
         bpy.ops.object.mode_set(mode="OBJECT")
         bpy.ops.object.mode_set(mode="EDIT")
         obj = bpy.context.edit_object
@@ -82,7 +84,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
 ui_classes = (CEF_OT_tris_convert_to_quads_ex,)
 
 
-def menu_func(self, context):
+def menu_func(self, _context):
     self.layout.operator(CEF_OT_tris_convert_to_quads_ex.bl_idname)
 
 
