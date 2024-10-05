@@ -19,13 +19,15 @@ This add-on needs [PuLP](https://github.com/coin-or/pulp).
 - on macOS
 
 ```
-/Applications/Blender.app/Contents/Resources/3.6/python/bin/python3.10 -m pip install pulp
+/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.11 -m pip install pulp
 ```
 
 - on Windows
 
 ```
-"C:\Program Files\Blender Foundation\Blender 3.6\3.6\python\bin\python" -m pip install pulp
+"C:\Program Files\Blender Foundation\Blender 4.2\4.2\python\bin\python" -m pip install pulp
+or
+"C:\Program Files\Blender Foundation\Blender 4.2\4.2\python\Scripts\pip" install pulp
 ```
 
 ## Usage
