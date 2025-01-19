@@ -4,20 +4,6 @@ import bmesh
 import bpy
 from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
 
-bl_info = {
-    "name": "Tris to Quads Ex",  # プラグイン名
-    "author": "tsutomu",  # 制作者名
-    "version": (1, 2),  # バージョン
-    "blender": (4, 2, 0),  # 動作可能なBlenderバージョン
-    "support": "TESTING",  # サポートレベル
-    "category": "Mesh",  # カテゴリ名
-    "description": "Tris to quads by mathematical optimization.",  # 説明文
-    "location": "Editmode > Face",  # 場所
-    "warning": "",  # 注意点やバグ情報
-    "doc_url": "https://github.com/SaitoTsutomu/Tris-Quads-Ex",  # ドキュメントURL
-}
-
-
 class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     """Tris to Quads"""
 
