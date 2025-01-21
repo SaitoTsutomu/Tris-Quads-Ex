@@ -1,0 +1,24 @@
+schema_version = "1.0.0"
+
+id = "tris_to_quads_ex"
+name = "Tris to Quads Ex"
+
+maintainer = "tsutomu"
+version = "1.2.0"
+blender_version_min = "4.2.0"
+
+tags = ["Mesh"]
+
+tagline = "Tris to quads by mathematical optimization"
+
+type = "add-on"
+
+website = "https://github.com/SaitoTsutomu/Tris-Quads-Ex"
+
+wheels = [
+    "./wheels/PuLP-2.9.0-py3-none-any.whl"
+]
+
+license = [
+    "SPDX:Apache-2.0"
+]
