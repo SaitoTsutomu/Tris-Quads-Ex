@@ -4,13 +4,17 @@ Using mathematical optimization, tris to quads.
 
 ## Installation
 
+Requires Blender 5.2 or later.
+
 - Download https://github.com/SaitoTsutomu/Tris-Quads-Ex/archive/refs/heads/master.zip
 - Start Blender.
 - Edit menu -> Preferences
-  - Select the "Add-ons" tab.
-  - Press the "Install ...".
-  - Select the downloaded ZIP file and press the button "Install Add-on".
-  - Check the "Mesh: Tris to Quads Ex".
+  - Select the "Get Extensions" tab.
+  - Open the drop-down menu (v) at the top right and select "Install from Disk...".
+  - Select the downloaded ZIP file and press the button "Install from Disk".
+  - Make sure "Tris to Quads Ex" is enabled in the "Add-ons" tab.
+
+Note: On Apple Silicon Macs, Rosetta 2 is required because the bundled CBC solver is an x86_64 binary.
 
 ## Usage
 

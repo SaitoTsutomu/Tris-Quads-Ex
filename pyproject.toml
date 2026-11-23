@@ -2,7 +2,7 @@
 ignore_missing_imports = true
 
 [tool.ruff.lint]
-ignore = ["ANN", "CPY", "D", "E501", "FBT003", "N801", "N999", "PLR2004", "PLR0916"]
+ignore = ["ANN", "CPY", "D", "line-too-long", "boolean-positional-value-in-call", "invalid-class-name", "invalid-module-name", "magic-value-comparison", "too-many-boolean-expressions"]
 preview = true
 select = ["ALL"]
 

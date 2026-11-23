@@ -1,8 +1,27 @@
+# ruff: file-ignore[non-empty-init-module]
+import os
+import stat
+from pathlib import Path
 from typing import ClassVar
 
 import bmesh
 import bpy
 from pulp import PULP_CBC_CMD, LpMaximize, LpProblem, LpVariable, lpSum, value
+
+
+def ensure_cbc_executable() -> None:
+    """Blenderの拡張機能インストールで落ちたcbcの実行権限を補う"""
+    path = Path(PULP_CBC_CMD.pulp_cbc_path)
+    if os.name == "nt":
+        return
+    try:
+        mode = path.stat().st_mode
+        want = mode | stat.S_IRUSR | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        if mode != want:
+            path.chmod(want)
+    except OSError:
+        pass  # 失敗しても登録は続ける(解けないときはNot solvedになる)
+
 
 class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     """Tris to Quads"""
@@ -12,7 +31,7 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
     bl_description = "Tris to quads."
     bl_options: ClassVar[set] = {"REGISTER", "UNDO"}
 
-    def execute(self, _context):
+    def execute(self, _context) -> set[str]:
         if len(bpy.context.selected_objects) != 1:
             self.report({"WARNING"}, "Select one object.")
             return {"CANCELLED"}
@@ -38,13 +57,14 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
             ln = edge.calc_length()
             edges[edge] = LpVariable(f"v{len(edges):03}", cat="Binary"), ln
         mx = max([i[1] for i in edges.values()], default=1)
-        m.setObjective(lpSum(v * (1 + 0.1 * ln / mx) for edge, (v, ln) in edges.items()))
+        m.setObjective(lpSum(v * (1 + 0.1 * ln / mx) for v, ln in edges.values()))
         for face in bm.faces:
             if len(face.edges) != 3:
                 continue
             vv = [vln[0] for edge in face.edges if (vln := edges.get(edge)) is not None]
             if len(vv) > 1:
                 m += lpSum(vv) <= 1
+        ensure_cbc_executable()
         solver = PULP_CBC_CMD(gapRel=0.01, timeLimit=60, msg=False)
         m.solve(solver)
         if m.status != 1:
@@ -70,18 +90,19 @@ class CEF_OT_tris_convert_to_quads_ex(bpy.types.Operator):
 ui_classes = (CEF_OT_tris_convert_to_quads_ex,)
 
 
-def menu_func(self, _context):
+def menu_func(self, _context) -> None:
     self.layout.operator(CEF_OT_tris_convert_to_quads_ex.bl_idname)
 
 
-def register():
+def register() -> None:
+    ensure_cbc_executable()
     for ui_class in ui_classes:
         bpy.utils.register_class(ui_class)
     # Adds the new operator to an existing menu(Face in Edit mode).
     bpy.types.VIEW3D_MT_edit_mesh_faces.append(menu_func)
 
 
-def unregister():
+def unregister() -> None:
     bpy.types.VIEW3D_MT_edit_mesh_faces.remove(menu_func)
     for ui_class in ui_classes:
         bpy.utils.unregister_class(ui_class)
